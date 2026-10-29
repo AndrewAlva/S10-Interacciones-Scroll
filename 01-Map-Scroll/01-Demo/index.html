@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>01-demo. (Map-Scroll)</title>
+  </head>
+  <body>
+    <!-- La escena 3D va fija detrás, con fondo transparente. -->
+    <canvas id="lienzo"></canvas>
+
+    <!-- El texto también está fijo: lo único que se desplaza es la página. -->
+    <header id="copy">
+      <p class="kicker">Ejercicio 01 · S10</p>
+      <h1 class="titulo">Giro.</h1>
+      <p class="bajada">El mismo map() de la sesión del mouse, ahora con el scroll. Baja.</p>
+    </header>
+
+    <!-- Esto es lo que desborda: una página más alta que la ventana.
+         Las marcas solo sirven para ver que la página sí se mueve. -->
+    <main id="pagina">
+      <section class="tramo"><span>0 %</span></section>
+      <section class="tramo"><span>25 %</span></section>
+      <section class="tramo"><span>50 %</span></section>
+      <section class="tramo"><span>75 %</span></section>
+      <section class="tramo"><span>100 %</span></section>
+    </main>
+
+    <!-- Barra de progreso en HTML y CSS -->
+    <div id="barra">
+      <div id="barra-pista"><div id="barra-relleno"></div></div>
+      <b id="barra-porcentaje">0%</b>
+    </div>
+
+    <aside id="hud">
+      <span>scrollY <b id="scroll-y">0</b></span>
+      <span>máximo <b id="scroll-max">0</b></span>
+      <span>progreso <b id="progreso">0.00</b></span>
+      <span>rot y <b id="rotation-y">0</b>° · x <b id="rotation-x">0</b>°</span>
+    </aside>
+
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>

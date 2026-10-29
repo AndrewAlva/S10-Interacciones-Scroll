@@ -1,0 +1,134 @@
+/* Estilos base neutros: la dirección de arte es tuya.
+   Cambia el fondo, los colores y la tipografía. */
+:root {
+  --fondo-1: #2a2a2a;
+  --fondo-2: #111111;
+  --texto: #f2f2f2;
+  --acento: #bdbdbd;
+
+  --sans: system-ui, "Segoe UI", Roboto, sans-serif;
+  --mono: ui-monospace, Consolas, monospace;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  color: var(--texto);
+  font-family: var(--sans);
+  /* El fondo va fijo: la página se desplaza, el fondo no */
+  background: radial-gradient(circle at 50% 50%, var(--fondo-1), var(--fondo-2) 70%) fixed;
+}
+
+/* Canvas: ocupa la ventana, fijo detrás de todo */
+#lienzo {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+}
+
+/* La página que desborda ------------------------------------------------- */
+#pagina { position: relative; }
+
+.tramo {
+  height: 100vh;
+  border-top: 1px solid rgb(255 255 255 / .08);
+
+  span {
+    position: absolute;
+    right: 7vw;
+    margin-top: 24px;
+    font: 400 12px/1 var(--mono);
+    letter-spacing: .1em;
+    opacity: .4;
+  }
+}
+
+/* Texto en HTML ---------------------------------------------------------- */
+#copy {
+  position: fixed;
+  left: 7vw;
+  top: 10vh;          /* arriba: el centro es del objeto 3D */
+  max-width: 30ch;
+  pointer-events: none;
+}
+
+.kicker {
+  margin: 0 0 1rem;
+  font: 500 12px/1 var(--mono);
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--acento);
+}
+
+.titulo {
+  margin: 0;
+  font-size: clamp(3rem, 8vw, 6.5rem);
+  font-weight: 800;
+  line-height: .9;
+  letter-spacing: -.04em;
+}
+
+.bajada {
+  margin: 1.4rem 0 0;
+  font-size: 1.05rem;
+  line-height: 1.5;
+  opacity: .75;
+}
+
+/* Barra de progreso ------------------------------------------------------ */
+#barra {
+  position: fixed;
+  left: 7vw;
+  right: 7vw;
+  bottom: 64px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  pointer-events: none;
+
+  b {
+    min-width: 4ch;
+    text-align: right;
+    font: 500 14px/1 var(--mono);
+    font-variant-numeric: tabular-nums;
+  }
+}
+
+#barra-pista {
+  flex: 1;
+  height: 4px;
+  border-radius: 2px;
+  background: rgb(255 255 255 / .12);
+  overflow: hidden;
+}
+
+#barra-relleno {
+  height: 100%;
+  background: var(--acento);
+  transform-origin: left;     /* que crezca desde la izquierda */
+  transform: scaleX(0);
+}
+
+/* Lectura de datos ------------------------------------------------------ */
+#hud {
+  position: fixed;
+  left: 7vw;
+  bottom: 28px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 24px;
+  font: 400 12px/1 var(--mono);
+  letter-spacing: .06em;
+  opacity: .55;
+  font-variant-numeric: tabular-nums;
+  pointer-events: none;
+
+  b { font-weight: 500; color: var(--texto); }
+}
+
+@media (max-width: 800px) {
+  #barra { bottom: 84px; }
+}

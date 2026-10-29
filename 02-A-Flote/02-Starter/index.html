@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>02-starter. (A-Flote)</title>
+  </head>
+  <body>
+    <!-- La escena 3D va detrás, con fondo transparente. El texto es HTML normal encima.
+         Aquí NADA desborda: la página no se puede desplazar. Solo escuchamos el gesto. -->
+    <canvas id="lienzo"></canvas>
+
+    <!-- Escribe tu propio texto -->
+    <header id="copy">
+      <p class="kicker">Ejercicio 02 · Tu pieza</p>
+      <h1 class="titulo">Tu título.</h1>
+      <p class="bajada">Una instrucción para el usuario.</p>
+    </header>
+
+    <aside id="hud">
+      <span>deltaY <b id="delta-y">0</b></span>
+      <span>deltaMode <b id="delta-mode">0</b></span>
+      <span>px <b id="pixeles">0</b></span>
+      <span>vel <b id="velocidad">0</b> px/s</span>
+      <span>dir <b id="direccion">—</b></span>
+      <span>altura <b id="altura">0.00</b></span>
+    </aside>
+
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>
