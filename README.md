@@ -67,14 +67,14 @@ npm run dev        # → http://localhost:5174
 
 ```bash
 # Terminal 1 · Demo
-cd ../../02-A-Flote/01-Demo
+cd ../../02-Scroll-Sin-Pagina/01-Demo
 npm install
 npm run dev
 ```
 
 ```bash
 # Terminal 2 · Starter
-cd ../../02-A-Flote/02-Starter
+cd ../../02-Scroll-Sin-Pagina/02-Starter
 npm install
 npm run dev
 ```
@@ -92,7 +92,10 @@ S10-Interacciones-Scroll/
 ├── 01-Map-Scroll/
 │   ├── 01-Demo/
 │   └── 02-Starter/
-└── 02-A-Flote/
+├── 02-Scroll-Sin-Pagina/
+│   ├── 01-Demo/
+│   └── 02-Starter/
+└── 03-A-Flote/          ← extra, para quien va adelante
     ├── 01-Demo/
     └── 02-Starter/
 ```
@@ -118,8 +121,8 @@ leer el input  →  normalizar  →  mapear  →  suavizar  →  dibujar
 | **Qué pasa** | La página (o un contenedor) es más alta que la ventana | La página no se puede mover |
 | **Evento** | `scroll` | `wheel` |
 | **Qué lees** | La **posición**: `window.scrollY` | El **gesto**: `event.deltaY` |
-| **Normalizas** | De 0 a lo que desborda → de 0 a 1 | Se acumula: píxeles, velocidad, dirección |
-| **Ejercicio** | 01 · Map scroll | 02 · A flote |
+| **Normalizas** | De 0 a lo que desborda → de 0 a 1 | Lo cuentas tú: sumas cada `deltaY` → de 0 a 1 |
+| **Ejercicio** | 01 · Map scroll | 02 · Scroll sin página (+ extra: A flote) |
 
 ### Uso 1 · La posición
 
@@ -174,11 +177,42 @@ La página desborda; el objeto está fijo al centro de la ventana. El progreso d
 
 ---
 
-### 02 · A flote · *individual · se entrega en clase*
+### 02 · Scroll sin página · *individual · se entrega en clase*
+
+*El mismo giro del ejercicio 01, pero aquí nada desborda.*
+
+Es tu ejercicio 01 con una sola diferencia: la página no se puede mover, así que `window.scrollY` siempre vale 0. El gesto sí llega, en el evento `wheel`. Tu trabajo es **contarlo**: sumar cada `deltaY` en una variable que hace el trabajo de `scrollY`, con bordes que decides tú. Con eso calculas el mismo progreso de 0 a 1 y reusas tu `map()` del objeto y de la barra.
+
+```js
+document.addEventListener("wheel", (event) => {
+  wheelData.posicion += event.deltaY;                       // contar el gesto
+  wheelData.posicion = clamp(wheelData.posicion, 0, MAX);   // los bordes de una página que no existe
+  progress = map(wheelData.posicion, 0, MAX, 0, 1);         // ¡el mismo progreso del ejercicio 01!
+});
+```
+
+**Repasa:** tu ejercicio 01: el progreso, el giro y la barra se quedan igual.
+
+| | |
+|---|---|
+| **Piso** | Escucha `wheel` y suma cada `deltaY` en `wheelData.posicion`. Decide `MAX`, limita con `clamp()` y normaliza de 0 a 1. Con `map()`, el progreso gira tu objeto y llena la barra. |
+| **Extensión 1** | Dirección: con `Math.sign(deltaY)`, la marca del objeto cambia de color hacia abajo y hacia arriba. |
+| **Extensión 2** | Energía: cada gesto la carga, cada frame se apaga sola (`energia *= 0.92`) y se nota en la escala del objeto. |
+| **Extensión 3** | La carpeta `03-A-Flote`: la gravedad contra el gesto. |
+| **60 FPS** | El evento solo cuenta; el loop dibuja. La barra con `transform`, `pixelRatio` con tope en 2 (ya está). |
+| **Preguntas de refuerzo** | ¿Qué diferencia hay entre tu `posicion` y `window.scrollY`? ¿Por qué escogiste ese `MAX`: qué pasa si es 300, o 30 000? ¿Qué cambió de tu código del ejercicio 01, y qué no? |
+
+**Necesitas:** tu ejercicio 01, `map()`, `clamp()` y la escena base de Three.js (ya viene armada).
+
+> **Nota sobre `deltaMode`.** En Firefox con mouse de rueda, `deltaY` puede llegar en líneas (`deltaMode === 1`) en lugar de píxeles. Para este ejercicio puedes usarlo directo; para convertir, multiplícalo por 16.
+
+---
+
+### Extra · A flote · *para quien termina el ejercicio 02*
 
 *Un globo cae sin parar. Solo el scroll hacia abajo lo mantiene en el aire.*
 
-Aquí nada desborda: no hay posición que leer. El gesto empuja al globo contra la gravedad. En un trackpad con scroll natural, el scroll hacia abajo es mover los dedos hacia **arriba**: el gesto y el globo van en la misma dirección.
+Como en el ejercicio 02, nada desborda. Ahora el gesto no mueve un progreso: empuja al globo contra la gravedad. En un trackpad con scroll natural, el scroll hacia abajo es mover los dedos hacia **arriba**: el gesto y el globo van en la misma dirección.
 
 **La gravedad** de la demo es de 6 m/s² (la real es 9.8). Cada segundo, el globo pierde 6 m/s de velocidad: desde el techo llega al suelo en menos de un segundo si nadie lo empuja. Es un número de diseño: más alto, cae más rápido y hay que scrollear más fuerte; más bajo, flota casi solo. Azul mientras flota, rojo cuando toca el suelo. No hay pantalla de fin: lo que importa es cómo se siente el gesto.
 
@@ -196,7 +230,7 @@ Aquí nada desborda: no hay posición que leer. El gesto empuja al globo contra 
 
 ---
 
-### Para los dos ejercicios
+### Para todos los ejercicios
 
 - **Bitácora de IA:** en el README de tu repositorio, qué le consultaste a la IA, qué aceptaste y qué descartaste, y por qué.
 - **60 fps en el equipo más lento del grupo.** Compruébalo en Chrome: *DevTools → Rendering → Frame rendering stats*.
@@ -215,6 +249,9 @@ Aquí nada desborda: no hay posición que leer. El gesto empuja al globo contra 
 | La barra nunca llega a 100 % | Al alto de la página le falta restar `window.innerHeight`. |
 | El objeto gira, pero el progreso pasa de 1 | Pasa el progreso por `clamp(progress, 0, 1)`: en algunos navegadores el scroll rebota más allá del borde. |
 | El evento `scroll` nunca llega | Nada desborda. Revisa que la página (o tu contenedor) sea más alta que la ventana. |
+| La posición no pasa de 0 | `MAX` sigue en `0`: `clamp()` no deja que la posición crezca. |
+| El progreso dice `NaN` | `MAX` vale `0` y `map()` divide entre 0. Dale un valor (prueba con 3000). |
+| Scrolleo y no pasa nada | Revisa que estés sumando en el evento `wheel`, no en `scroll`: aquí la página no se mueve y `scroll` nunca llega. |
 | El globo no sube | `GRAVEDAD` y `EMPUJE` siguen en `0`, o estás empujando con el scroll hacia arriba (`deltaY` negativo). |
 | El globo sube distinto con rueda y con trackpad | Es normal: la rueda manda pocos eventos grandes y el trackpad muchos chicos. Calibra `EMPUJE` probando con los dos. |
 | En Firefox el globo apenas se mueve | Firefox puede mandar la rueda en líneas (`deltaMode` 1). Convierte a píxeles antes de usar `deltaY`. |
